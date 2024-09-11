@@ -1,0 +1,23 @@
+name: Update
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run a multi-line script
+        run: |
+          rm -f "$GITHUB_WORKSPACE/jawiki-latest-all-titles-in-ns0.gz"
+          wget -P "$GITHUB_WORKSPACE" https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-all-titles-in-ns0.gz
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
